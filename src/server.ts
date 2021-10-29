@@ -51,6 +51,24 @@ app.get('/api/food/', async (_request, response) => {
   response.send(allFoods);
 });
 
+// Delete food
+app.delete('/api/food/:name', async (request, response) => {
+  const foodCollection = getFoodCollection();
+  const singleFood = request.params.name;
+
+  const isFoodKnown = await foodCollection.findOne({
+    name: singleFood,
+  });
+  if (isFoodKnown) {
+    foodCollection.deleteOne({ name: singleFood });
+    response.status(200).send('Mhhh, yummy. Food deleted 🍢.');
+  } else {
+    response
+      .status(404)
+      .send('This food doesn’t exist on earth 🌎 Delete an other food. ');
+  }
+});
+
 // Connect to database
 connectDatabase(process.env.MONGODB_URL).then(() =>
   app.listen(port, () => {

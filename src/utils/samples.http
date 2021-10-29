@@ -19,3 +19,7 @@ GET http://localhost:3000/api/food HTTP/1.1
 ### Get single food
 
 GET http://localhost:3000/api/food/Banana HTTP/1.1
+
+### Delete food
+
+DELETE http://localhost:3000/api/food/Apple HTTP/1.1
