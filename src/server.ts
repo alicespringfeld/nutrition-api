@@ -26,6 +26,31 @@ app.post('/api/food', async (request, response) => {
   response.send('new food added!');
 });
 
+// Get a single food
+app.get('/api/food/:name', async (request, response) => {
+  const foodCollection = getFoodCollection();
+  const singleFood = request.params.name;
+
+  const isFoodKnown = await foodCollection.findOne({
+    name: singleFood,
+  });
+  if (isFoodKnown) {
+    response.status(200).send(isFoodKnown);
+  } else {
+    response
+      .status(404)
+      .send('This food doesn’t exist on earth 🌎 Check another planet. ');
+  }
+});
+
+// Get all food
+app.get('/api/food/', async (_request, response) => {
+  const foodCollection = getFoodCollection();
+  const position = foodCollection.find();
+  const allFoods = await position.toArray();
+  response.send(allFoods);
+});
+
 // Connect to database
 connectDatabase(process.env.MONGODB_URL).then(() =>
   app.listen(port, () => {
