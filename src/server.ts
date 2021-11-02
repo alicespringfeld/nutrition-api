@@ -51,7 +51,7 @@ app.get('/api/food/', async (_request, response) => {
   response.send(allFoods);
 });
 
-// Delete food function
+// Delete food functio
 app.delete('/api/food/:name', async (request, response) => {
   const foodCollection = getFoodCollection();
   const singleFood = request.params.name;
