@@ -43,6 +43,22 @@ app.get('/api/food/:name', async (request, response) => {
   }
 });
 
+// Change
+app.post('api/charachters/:name', async (request, response) => {
+  const foodCollection = getFoodCollection();
+  const newField = request.body;
+  const food = request.params.name;
+  const foodRequest = await foodCollection.findOne({
+    name: food,
+  });
+  if (foodRequest) {
+    await foodCollection.updateOne({ name: food }, { $set: newField });
+    response.send('Object updated');
+  } else {
+    response.status(404).send('Food not found');
+  }
+});
+
 // Get all food
 app.get('/api/food/', async (_request, response) => {
   const foodCollection = getFoodCollection();
@@ -51,7 +67,7 @@ app.get('/api/food/', async (_request, response) => {
   response.send(allFoods);
 });
 
-// Delete food functio
+// Delete food function
 app.delete('/api/food/:name', async (request, response) => {
   const foodCollection = getFoodCollection();
   const singleFood = request.params.name;
