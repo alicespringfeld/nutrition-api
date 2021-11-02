@@ -30,7 +30,6 @@ app.post('/api/food', async (request, response) => {
 app.get('/api/food/:name', async (request, response) => {
   const foodCollection = getFoodCollection();
   const singleFood = request.params.name;
-
   const isFoodKnown = await foodCollection.findOne({
     name: singleFood,
   });
@@ -41,6 +40,23 @@ app.get('/api/food/:name', async (request, response) => {
       .status(404)
       .send('This food doesn’t exist on earth 🌎 Check another planet. ');
   }
+});
+
+// Add field
+app.patch('/api/food/:name', async (request, response) => {
+  const foodCollection = getFoodCollection();
+  const newField = request.body;
+  const food = request.params.name;
+
+  const updated = await foodCollection.updateOne(
+    { name: food },
+    { $set: newField }
+  );
+  if (updated.matchedCount === 0) {
+    response.status(404).send('Food not found');
+    return;
+  }
+  response.status(200).send('Field added');
 });
 
 // Get all food
